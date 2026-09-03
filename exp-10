@@ -1,0 +1,22 @@
+clc; clear; close all;
+Fs=8000; t=0:1/Fs:3;
+x=sin(2*pi*200*t)+0.5*sin(2*pi*400*t); % Clean signal
+xn=x+0.3*randn(size(x)); % Noisy signal
+Y=fft(xn);
+N=fft(0.3*randn(size(x)));
+xe=real(ifft(max(abs(Y)-abs(N),0).*exp(1j*angle(Y))));
+% Signals
+figure;
+subplot(311),plot(t,x),title('Clean Speech')
+subplot(312),plot(t,xn),title('Noisy Speech')
+subplot(313),plot(t,xe),title('Enhanced Speech')
+% Spectrograms
+figure;
+subplot(311),spectrogram(x),title('Clean Spectrogram')
+subplot(312),spectrogram(xn),title('Noisy Spectrogram')
+subplot(313),spectrogram(xe),title('Enhanced Spectrogram')
+% Magnitude Spectra
+figure;
+subplot(311),plot(abs(fft(x))),title('Clean Spectrum')
+subplot(312),plot(abs(fft(xn))),title('Noisy Spectrum')
+subplot(313),plot(abs(fft(xe))),title('Enhanced Spectrum')
